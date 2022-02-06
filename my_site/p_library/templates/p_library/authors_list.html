@@ -1,0 +1,13 @@
+{% extends 'p_library/index.html' %}
+
+{% block title %}
+({{ title }})
+{% endblock %}
+
+{% block main %}
+	<ul>
+		{% for author in object_list %}
+		    <li>{{ author.full_name }}</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

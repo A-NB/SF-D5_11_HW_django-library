@@ -1,0 +1,25 @@
+{% extends 'p_library/index.html' %}
+
+{% block title %}
+({{ title }})
+{% endblock %}
+
+{% block main %}
+
+<h4 style="margin-left:15px;">В моей библиотеке представлены книги (всего наименований - {{ books_counter }}) следующих издательств:</h4>
+<ul class="list-group list-group-numbered">  
+{% for pub_house in pub_houses %}      
+    <li class="list-group-item list-group-item-info">
+        <a class="fw-bold text-decoration-none" href="../admin/p_library/publishinghouse/{{ pub_house.id }}/change/">&#171;{{ pub_house.name }}&#187; ({{ pub_house.city }}, {{ pub_house.country }})</a>
+        <ul class="list-group">
+        {% for book in pub_house.books.all %}                  
+            <li class="list-group-item">
+                <a class="text-decoration-none" href="../admin/p_library/book/{{ book.id }}/change/">&#171;{{ book.title }}&#187; ({{ book.author }}). Год издания - {{ book.year_publishing }}</a>
+            </li>  
+        {% endfor %}                           
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
