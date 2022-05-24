@@ -1,13 +1,29 @@
-{% extends 'p_library/index.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
-({{ title }})
+    ({{ title }})
 {% endblock %}
 
 {% block main %}
-	<ul>
-		{% for author in object_list %}
-		    <li>{{ author.full_name }}</li>
-		{% endfor %}
-	</ul>
+
+{# load p_library_get_objects #}
+
+{# get_books as books #}
+
+<h4 style="margin-left:15px;">В моей библиотеке представлены книги следующих авторов (всего - {{ authors|length }}):</h4>
+<ul class="list-group list-group-numbered">  
+{% for author in authors %}      
+    <li class="list-group-item list-group-item-action">
+        <a class="fw-bold text-decoration-none" href="{{ author.get_absolute_url }}">{{ author.full_name }}</a>
+        <ul>
+        {% for book in author.book_author.all %}        
+            <li class="list-group-item-action">
+                <a class="text-decoration-none" href="../admin/p_library/book/{{ book.id }}/change/">&#171;{{ book.title }}&#187;. Год издания - {{ book.year_publishing }}</a>
+            </li>  
+        {% endfor %}                           
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+
 {% endblock %}

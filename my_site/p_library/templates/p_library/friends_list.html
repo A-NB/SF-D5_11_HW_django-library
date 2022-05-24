@@ -1,8 +1,18 @@
-{% extend p_library/index.html %}
+{% extends 'base.html' %}
 
 {% block title %}
 ({{ title }})
 {% endblock %}
 
 {% block main %}
+
+<h4 style="margin-left:15px;">В нашу библиотеку записаны:</h4>
+<ul class="list-group list-group-numbered">  
+{% for friend in friends %}      
+    <li class="list-group-item">
+        <a class="text-decoration-none" href="{{ friend.get_absolute_url }}">{{ friend.name }}</a>
+    </li>
+{% endfor %}
+</ul>
+
 {% endblock %}

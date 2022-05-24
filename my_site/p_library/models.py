@@ -1,7 +1,8 @@
 from string import Template
 
 from django.db import models
-from django.urls import reverse_lazy
+from django.core.exceptions import ValidationError
+from django.urls import reverse_lazy, reverse
 from django.utils.translation import gettext as _
 
 
@@ -25,8 +26,8 @@ class Author(models.Model):
         verbose_name=_("Страна"),
     )
 
-    # def get_absolute_url(self):
-    #     return reverse_lazy('authors')#, kwargs={'auth_id': self.pk})
+    def get_absolute_url(self):
+        return reverse_lazy('p_library:view_author', kwargs={'auth_id': self.pk})
 
     def __str__(self):
         return Template('$name').substitute(name=self.full_name)
@@ -49,12 +50,16 @@ class Book(models.Model):
     )
     description = models.TextField(
         verbose_name=_("Аннотация"),
+        blank=True,
     )
     year_release = models.SmallIntegerField(
         verbose_name=_("Год выхода в свет"),
+        blank=True,
     )
     copy_count = models.SmallIntegerField(
         verbose_name=_("Число копий"),
+        default=1,
+        # validators=
     )
     price = models.DecimalField(
         max_digits=12,
@@ -78,7 +83,7 @@ class Book(models.Model):
     )
     year_publishing = models.SmallIntegerField(
         verbose_name=_("Год издания"),
-        default=0,
+        blank=True,
     )
     friends = models.ManyToManyField(
         "p_library.Friend",
@@ -87,9 +92,18 @@ class Book(models.Model):
         symmetrical=False,
         verbose_name=_("Сейчас читают"),
         related_name="reading_books",
-        default=_("никто"),
+        # default=_("никто"),
         blank=True,
     )
+
+    def get_absolute_url(self):
+        return reverse_lazy('p_library:view_book', kwargs={'book_id': self.pk})
+
+        # def clean(self):
+
+    #     if self.copy_count<len(self.friends):
+    #         raise ValidationError(_("Количество копий не может быть меньше количества книг, которые сейчас читают!"))
+    #     return super().clean()           
 
     def __str__(self):
         return Template('$title').substitute(title=self.title)
@@ -112,6 +126,9 @@ class PublishingHouse(models.Model):
         verbose_name=_("Город"),
     )
 
+    def get_absolute_url(self):
+        return reverse_lazy('p_library:view_publisher', kwargs={'publisher_id': self.pk})    
+
     def __str__(self):
         return Template('$name').substitute(name=self.name)
 
@@ -124,21 +141,13 @@ class Friend(models.Model):
     name = models.TextField(
         verbose_name=_("Друг"),
     )
-    # books = models.ManyToManyField("p_library.Book",
-    #                               symmetrical=False,
-    #                               verbose_name=_("Сейчас читает"),
-    #                               related_name="friends",
-    #                               default=_("пока ничего"),
-    #                               blank=True,)
     address = models.TextField(
         verbose_name=_("Адрес"),
         default=_("Планета Земля"),
     )
 
-    # borrow_date = models.DateField(
-    #         verbose_name=_("Когда взял"),
-    #         auto_now=False,
-    # )
+    def get_absolute_url(self):
+        return reverse_lazy('p_library:view_friend', kwargs={'friend_id': self.pk})
 
     def __str__(self):
         # return f'{self.name}'
@@ -173,3 +182,10 @@ class BookFriend(models.Model):
         blank=True,
         auto_now=True,
     )
+
+    def save(self, *args, **kwargs):
+        if BookFriend.objects.filter(book_id=self.book_id).count() < self.book.copy_count:
+            super(BookFriend, self).save(*args, **kwargs)  # Call the "real" save() method
+        else:
+            #raise ValidationError("К сожалению, все копии книги на руках. Зайдите попозже :)")
+            return # Do nothing

@@ -46,11 +46,11 @@ class BookFriendInline(admin.TabularInline):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    inlines = (BookFriendInline,)
+    inlines = (BookFriendInline, )
 
 
 class FriendAdmin(admin.ModelAdmin):
-    inlines = (BookFriendInline,)
+    inlines = (BookFriendInline, )
 
 # admin.site.register(Book, BookAdmin) 
 
