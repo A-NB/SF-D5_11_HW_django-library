@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ title }})
+{% endblock %}
+
+{% block main %}
+
+<h4 class="text-center">Здесь собрана информация о книгах (всего наименований - {{ books|length }}) из моей личной коллекции.</h4>
+
+<table class="table table-bordered table-sm align-middle table-hover">
+    <thead class="table-dark text-center align-middle">
+        <tr>
+            <th>Номер</th>
+            <th>ISBN</th>
+            <th>Название</th>  
+            <th>Выход в свет</th>              
+            <th>Описание</th>        
+            <th>Автор</th>
+            <th>Страна</th>
+            <th>Издательство</th>
+            <th>Год издания</th>
+            <th>В наличии</th>
+
+            <th>Сейчас читают</th>
+
+            <th>Изменить количество</th>        
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td class="text-center">{{ forloop.counter }}</td>
+            <td>{{ book.ISBN }}</td>
+            <td><a class="text-decoration-none" href="{{ book.get_absolute_url }}">{{ book.title }}</a></td>
+            <td class="text-center">{{ book.year_release }}</td>        
+            <td>{{ book.description }}</td>        
+            <td><a class="text-decoration-none" href="{{ book.author.get_absolute_url }}">{{ book.author.full_name }}</a></td>
+            <td class="text-center">{{ book.author.country }}</td>
+            <td><a class="text-decoration-none" href="{{ book.publishing_house.get_absolute_url }}">{{ book.publishing_house }}</a></td>
+            <td class="text-center">{{ book.year_publishing }}</td>
+            <td class="text-center">{{ book.copy_count }}</td>
+
+            <td class="text-center">{{ book.friends.all|length }}</td>
+
+            <td class="text-center">
+                <form action="{% url 'p_library:book_increment' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ book.id }}"/>
+                    <input type="submit" value="&#9650;"/>
+                </form>
+                <form action="{% url 'p_library:book_decrement' %}" method="post" enctype="multipart/form-data"> <!-- /index/book_decrement/ --> 
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ book.id }}"/>
+                    <input type="submit" value="&#9660;"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Все числа от 1 до 100, которые делятся на 3:<br>
+{% load diapason %}
+{# load divide #}
+{% for n in 1|diapason:101 %}
+{# for n in range_ #}
+    {# if n|divide:3 #}
+    {% if n|divisibleby:"3" %}
+        {{ n }}
+    {% endif %}
+{% endfor %} -->
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	Форма создания и редактирования книг
+{% endblock %}
+
+{% block main %}
+
+{% comment %}
+<!--	<div class="d-flex flex-column">-->
+<!--		<form method="POST">-->
+<!--			{% csrf_token %}-->
+<!--			{{ form.as_p }}-->
+<!--&lt;!&ndash;			<input type="submit" value="Сохранить">&ndash;&gt;-->
+<!--			<button type="submit" class="btn btn-primary btn-block">-->
+<!--				Сохранить-->
+<!--			</button>-->
+<!--		</form>-->
+<!--	</div>-->
+{% endcomment %}
+{% comment %}
+<!--	<form method="POST">-->
+<!--		{% csrf_token %}-->
+<!--		{{ form.as_p }}-->
+<!--		<div class="mb-3">-->
+<!--			<label for="exampleInputEmail1" class="form-label">Email address</label>-->
+<!--			<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">-->
+<!--			<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+<!--		</div>-->
+<!--	</form>-->
+{% endcomment %}
+{% comment %}
+	<form method="POST">
+		{% csrf_token %}
+		{% for field in form %}
+			<div class="form-group">
+					{{ field.label_tag }}
+				<div class="form-control">
+					{{ field }}
+				</div>
+				<div class="invalid-feedback">
+					{{ fields.errors }}
+				</div>
+			</div>
+		{% endfor %}
+		<button type="submit" class="btn btn-primary btn-block">
+			Сохранить
+		</button>
+	</form>
+
+{% endcomment %}
+<div class="d-flex flex-row">
+<div class="col-md-3">Это должно быть слева</div>
+<div class="col-md-6">
+	<form method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<!-- <button type="submit" class="btn btn-primary btn-lg btn-block">
+			Сохранить
+		</button> -->
+		
+		<div class="d-grid">
+			<button type="submit" class="btn btn-primary">Сохранить</button>
+		  </div>
+		  
+		  <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<button type="submit" class="btn btn-primary me-md-2">Сохранить</button>
+		  </div>		   -->
+
+
+	</form>
+</div>
+<div class="col-md-3">Это должно быть справа</div>
+</div>	
+
+{% endblock %}
