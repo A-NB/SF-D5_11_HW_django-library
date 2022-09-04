@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ object.name }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3">В издательстве <a class="text-decoration-none link-info" href="edit/">&#171;{{ object.name }}&#187;</a> вышли в свет следующие книги из моей библиотеки (всего - {{ books|length }}):</h5>
+<ul class="mx-3 list-group list-group-numbered">  
+    {% for book in books %}      
+        <li class="list-group-item">  <!-- list-group-item-info"> -->
+            <a class="text-decoration-none" href="{{ book.get_absolute_url }}">&#171;{{ book.title }}&#187; (год издания - {{ book.year_publishing }})</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

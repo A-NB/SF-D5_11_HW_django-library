@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ object.name }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3"><a class="text-decoration-none link-info" href="edit/">{{ object.name }}</a> сейчас читает:</h5>
+<ul class="mx-3 list-group list-group-numbered">  
+{% if not books %}
+    <h5 class="mx-3">Пока ничего</h5>
+{% else %}
+{% for book in books %}
+{% if book.book %}
+    <li class="list-group-item">
+        <a class="text-decoration-none" href="{{ book.book.get_absolute_url }}">&#171;{{ book.book }}&#187; </a>
+        {% if book.book.author %}
+            <a class="text-decoration-none link-info" href="{{ book.book.author.get_absolute_url }}">({{ book.book.author }})</a>
+        {% else %}
+            (автор неизвестен)
+        {% endif %} - с {{ book.borrow_date }}
+    </li>
+{% endif %}
+{% endfor %}
+{% endif %}
+</ul>
+
+{% endblock %}

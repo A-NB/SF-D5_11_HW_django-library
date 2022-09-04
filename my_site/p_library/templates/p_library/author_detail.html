@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+({{ object.full_name }})
+
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3"><a class="text-decoration-none link-info" href="edit/">{{ object.full_name }}</a> является автором следующих книг из моей библиотеки (всего - {{ books|length }}):</h5>
+<ul class="mx-3 list-group list-group-numbered">  
+{% for book in books %}      
+    <li class="list-group-item">
+        <a class="text-decoration-none" href="{{ book.get_absolute_url }}">&#171;{{ book.title }}&#187; (год издания - {{ book.year_publishing }})</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

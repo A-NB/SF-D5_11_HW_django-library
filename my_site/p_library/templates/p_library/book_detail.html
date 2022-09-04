@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ object.title }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3">Книга <a class="text-decoration-none link-info" href="edit/">&#171;{{ object.title }}&#187;</a> {% if object.author %} автора {{ object.author }}{% else %} неизвестного автора{% endif %}. Всего копий в наличии: {{ object.copy_count }}</h5>
+<h5 class="mx-3">Сейчас эту книгу читают:</h5>
+{% if not readers %}
+    <p class="mx-3">Пока никто</p>
+{% else %}
+    <ul class="mx-3 list-group list-group-numbered">  
+    {% for reader in readers %}      
+        <li class="list-group-item">
+            <a class="text-decoration-none" href="{{ reader.reader.get_absolute_url }}">{{ reader.reader.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    ({{ title }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3">В библиотеке представлены книги следующих издательств:</h5>
+<ul class="list-group list-group-numbered">
+{% for publisher in publishers %}      
+    <li class="list-group-item list-group-item-action">
+        <a class="fw-bold text-decoration-none"
+           href="{{ publisher.get_absolute_url }}">&#171;{{ publisher.name }}&#187; ({{ publisher.city }}, {{ publisher.country }})</a>
+        <ul>
+        {% for book in publisher.books.all %}                  
+            <li class="list-group-item-action">
+                <a class="text-decoration-none" href="{{ book.get_absolute_url }}">&#171;{{ book.title }}&#187; 
+                {% if book.author %}
+                    <a class="text-decoration-none link-info" href="{{ book.author.get_absolute_url }}">({{ book.author }}).
+                    </a>
+                {% else %}
+                   (автор неизвестен). 
+                {% endif %}
+                </a>
+                Год издания - {{ book.year_publishing }}
+            </li>  
+        {% endfor %} 
+        </ul>
+    </li>
+{% endfor %}
+{% load p_library_get_objects %}
+{% get_books_None_publisher as books %}
+{% if books %}
+    <li class="list-group-item list-group-item-action">
+        <a class="fw-bold text-decoration-none" href="">Издательство неизвестно</a>
+        <ul>
+        {% for book in books %}
+            <li class="list-group-item-action">
+                <a class="text-decoration-none" href="{{ book.get_absolute_url }}">&#171;{{ book.title }}&#187; 
+                {% if book.author %}
+                    <a class="text-decoration-none link-info" href="{{ book.author.get_absolute_url }}">({{ book.author }}).
+                    </a>
+                {% else %}
+                    (автор неизвестен). 
+                {% endif %} 
+                </a>
+                Год издания - {{ book.year_publishing }}
+            </li>     
+        {% endfor %}
+        </ul>
+    </li>                
+{% endif %}
+</ul>
+
+{% endblock %}

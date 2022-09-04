@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ title }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="mx-3">В нашу библиотеку записаны:</h5>
+<ul class="list-group list-group-numbered">  
+{% for reader in readers %}      
+    <li class="list-group-item">
+        <a class="text-decoration-none" href="{{ reader.get_absolute_url }}">{{ reader.name }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

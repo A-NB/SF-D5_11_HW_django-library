@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+({{ title }})
+{% endblock %}
+
+{% block main %}
+
+<h5 class="text-center">В библиотеке представлены следующие книги:</h5>
+<table class="table table-bordered table-sm align-middle table-hover">
+    <thead class="table-dark text-center align-middle">
+        <tr>
+            <th>Номер</th>
+            <th>ISBN</th>
+            <th>Название</th>  
+            <th>Выход в свет</th>              
+            <th>Описание</th>        
+            <th>Автор</th>
+            <th>Страна</th>
+            <th>Издательство</th>
+            <th>Год издания</th>
+            <th>Сейчас читают</th>
+            <th>Есть в наличии</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td class="text-center">{{ forloop.counter }}</td>
+            <td>{{ book.ISBN }}</td>
+            <td>
+                <a class="text-decoration-none" href="{{ book.get_absolute_url }}">
+                    {{ book.title }}
+                </a>
+            </td>
+            <td class="text-center">{{ book.year_release }}</td>        
+            <td>{{ book.description }}</td>        
+            <td>
+                {% if book.author.full_name %}
+                    {% autoescape off %}                
+                        <a class="text-decoration-none" href="{{ book.author.get_absolute_url }}">
+                            {{ book.author.full_name }}
+                        </a>                            
+                    {% endautoescape %}                              
+                {% else %}
+                    Неизвестен
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {% if book.author.country %}
+                    {{ book.author.country }}
+                {% else %}
+                    ??
+                {% endif %}                    
+            </td>
+            <td>
+                {% if book.publisher.name %}
+                    {% autoescape off %}
+                        <a class="text-decoration-none" href="{{ book.publisher.get_absolute_url }}">
+                            {{ book.publisher.name }}
+                    {% endautoescape %}                            
+                {% else %}
+                    Неизвестно
+                {% endif %}
+                </a>
+            </td>
+            <td class="text-center">{{ book.year_publishing }}</td>
+            <td class="text-center">{{ book.book_reading_reader.all|length }}</td>
+            <td class="align-middle">
+                <div class="d-flex flex-row">
+                    <form action="{% url 'p_library:book_decrement' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ book.id }}"/>
+                        <input type="submit" value="&#8722;" style="background-color: rgb(212, 253, 239);"/>
+                    </form>
+                    <div class="flex-grow-1 text-center fw-bold pt-1" style="padding: 2px;">
+                        {{ book.copy_count }}
+                    </div>
+                    <form action="{% url 'p_library:book_increment' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ book.id }}"/>
+                        <input type="submit" value="&#43;" style="background-color: rgb(255, 222, 210);"/>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

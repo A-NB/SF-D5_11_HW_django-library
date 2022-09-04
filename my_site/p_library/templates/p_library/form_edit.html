@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	(Форма создания и редактирования {{ info }})
+{% endblock %}
+
+{% block main %}
+
+<div class="d-flex flex-row">
+	<div class="col-md-3">
+	</div>
+	<div class="col-md-6 mx-3">
+		<form method="POST">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<div class="d-grid">
+				<button type="submit" class="btn btn-primary">Сохранить</button>
+			</div>
+		</form>	
+	</div>
+	<div class="col-md-3">
+	</div>
+</div>
+
+{% endblock %}

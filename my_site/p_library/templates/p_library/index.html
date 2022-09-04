@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block welcome %}
+
+{% autoescape off %}
+{{ welcome_phrase }}
+{% endautoescape %}
+
+
+{% comment %}
+<div class="container">
+<!--<h5>-->
+    <div class="row">
+        <div class="col-3"></div>
+        <div><!-- class="col-6 center-text text-dark" class="d-flex flex-md-column">-->
+            <h4 class="center-text text-dark">Добро пожаловать в мою библиотеку!</h4>
+            <h5>В библиотеке собраны книги различных авторов, всего -  </h5>
+            <h5>На данный момент в библиотеку записано читателей -  </h5>
+            <h5>Для навигации по разделам сайта воспользуйтесь меню в верхней части страницы.</h5>
+            <h5>Желаю приятно и с пользой провести время!</h5>
+        </div>
+        <div class="col-3"></div>
+    </div>
+<!--</h5>-->
+</div>
+{% endcomment %}
+{% endblock %}
