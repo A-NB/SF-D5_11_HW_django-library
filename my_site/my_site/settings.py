@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['p_library_django_SECRET_KEY'] #'django-insecure-))h4sg6qx5c+cn!w9im_cow=u%*q%!)a)ehjkz29k@ffg2r$q@'
+SECRET_KEY = os.environ.get('p_library_django_SECRET_KEY') #'django-insecure-))h4sg6qx5c+cn!w9im_cow=u%*q%!)a)ehjkz29k@ffg2r$q@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True)) #DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -136,3 +136,8 @@ STATIC_URL = 'static/' # Взято с https://django-debug-toolbar.readthedocs.
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = ['127.0.0.1',]
+
+# Heroku: Update database configuration from $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
