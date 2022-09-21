@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('p_library_django_SECRET_KEY') #'django-insecure-))h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True)) #DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com'] #ALLOWED_HOSTS = []
 
 
 # Application definition
