@@ -4,7 +4,6 @@
 fixtures/
 venv/
 __pycache__/
-migrations/
 my_site/p_library/templates/p_library/manage_authors.html
 my_site/p_library/templates/p_library/manage_books_authors.html
 
